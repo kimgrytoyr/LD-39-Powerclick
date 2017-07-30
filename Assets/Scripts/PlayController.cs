@@ -44,7 +44,26 @@ public class PlayController : MonoBehaviour {
 		float minX = (playArea.GetComponent<RectTransform> ().rect.size.x / 2) - (size / 2);
 		float minY = (playArea.GetComponent<RectTransform> ().rect.size.y / 2) - (size / 2);
 
-		circle.transform.localPosition = new Vector3 (Random.Range (-minX, minX), Random.Range (-minY, minY), 0);
+		// Get previous click vector
+		Vector3 newPos;
+		if (gameController.clicks.Count == 0) {
+			newPos = new Vector3 (0, 0, 0);
+		} else {
+			Vector2 prevCoords = gameController.clicks [gameController.clicks.Count - 1].coords;
+			Vector3 prevPos = new Vector3 (prevCoords.x, prevCoords.y, 0);
+
+			float distance;
+			int count = 0;
+			do {
+				newPos = new Vector3 (Random.Range (-minX, minX), Random.Range (-minY, minY));
+				distance = Vector3.Distance (prevPos, newPos);
+				count++;
+				Debug.Log ("Pass " + count + ": " + distance);
+			} while (distance < 50);
+		}
+
+
+		circle.transform.localPosition = newPos;
 
 		spawned = true;
 	}

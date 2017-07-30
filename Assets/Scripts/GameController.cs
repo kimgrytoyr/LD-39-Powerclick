@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
 
 	public bool running = false;
 
-	List<Click> clicks = new List<Click> ();
+	public List<Click> clicks = new List<Click> ();
 
 	bool muted = false;
 
@@ -160,8 +160,6 @@ public class GameController : MonoBehaviour {
 	public int AddClick(Click click) {
 		clicks.Add (click);
 		int lastClick = clicks.Count - 1;
-
-		Debug.Log (timeSinceLastClick);
 
 		int p = 5;
 		if (lastClick > 0) {
