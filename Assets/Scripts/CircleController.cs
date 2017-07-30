@@ -12,6 +12,8 @@ public class CircleController : MonoBehaviour, IPointerClickHandler {
 
 	public GameObject gotPointsText;
 
+	float fadeOutDelay = 2.0f;
+
 	// Use this for initialization
 	void Start () {
 		playController = GameObject.Find ("PlayController").GetComponent<PlayController> ();
@@ -37,14 +39,17 @@ public class CircleController : MonoBehaviour, IPointerClickHandler {
 		int pts = gameController.AddClick (click);
 
 		transform.position = new Vector2 (1000, 1000);
-		Destroy (gameObject, 2.0f);
+		Color c = GetComponent<Image> ().color;
+		GetComponent<Image> ().color = new Color (c.r, c.g, c.b, 0.0f);
+
+		Destroy (gameObject, fadeOutDelay);
 
 		// Spawn points text
 		GameObject gpt = (GameObject)Instantiate (gotPointsText, playArea.transform);
 		gpt.transform.localPosition = click.coords;
 		gpt.GetComponent<Text> ().text = "+" + pts;
-		StartCoroutine(FadeText(2.0f, gpt.GetComponent<Text>()));
-		Destroy (gpt, 2.0f);
+		StartCoroutine(FadeText(fadeOutDelay, gpt.GetComponent<Text>()));
+		Destroy (gpt, fadeOutDelay);
 	}
 
 	public IEnumerator FadeText(float fadeTime, Text txt) {
